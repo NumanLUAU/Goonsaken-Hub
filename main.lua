@@ -130,7 +130,7 @@ local function NameProtect(toggled)
         local gui = LocalPlayer.PlayerGui
         if not gui then return end
 
-        -- 1️⃣ TemporaryUI.PlayerInfo.CurrentSurvivors -> Username
+        --  TemporaryUI.PlayerInfo.CurrentSurvivors -> Username
         local currentSurvivors = gui:FindFirstChild("TemporaryUI") 
             and gui.TemporaryUI:FindFirstChild("PlayerInfo") 
             and gui.TemporaryUI.PlayerInfo:FindFirstChild("CurrentSurvivors")
@@ -143,7 +143,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 2️⃣ TemporaryUI -> any TextLabel named "Title3"
+        --  TemporaryUI -> any TextLabel named "Title3"
         local tempUI = gui:FindFirstChild("TemporaryUI")
         if tempUI then
             for _, v in pairs(tempUI:GetDescendants()) do
@@ -153,7 +153,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 3️⃣ MainUI.PlayerListHolder.Contents.Players -> Username
+        --  MainUI.PlayerListHolder.Contents.Players -> Username
         local mainPlayers = gui:FindFirstChild("MainUI") 
             and gui.MainUI:FindFirstChild("PlayerListHolder") 
             and gui.MainUI.PlayerListHolder:FindFirstChild("Contents") 
@@ -167,7 +167,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 4️⃣ TemporaryUI -> PlayerName / PlayerUsername text labels matching LocalPlayer usernames
+        --  TemporaryUI -> PlayerName / PlayerUsername text labels matching LocalPlayer usernames
         if tempUI then
             for _, v in pairs(tempUI:GetDescendants()) do
                 if v:IsA("TextLabel") and (v.Name == "PlayerName" or v.Name == "PlayerUsername") then
@@ -181,7 +181,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 5️⃣ Workspace.Players.Spectating -> humanoids, set DisplayDistanceType to None
+        --  Workspace.Players.Spectating -> humanoids, set DisplayDistanceType to None
         local spectatingFolder = workspace:FindFirstChild("Players") 
             and workspace.Players:FindFirstChild("Spectating")
 
@@ -194,7 +194,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 6️⃣ ImageLabels named after LocalPlayers
+        --  ImageLabels named after LocalPlayers
         for _, plr in pairs(Players:GetPlayers()) do
             local imgLabel = gui:FindFirstChild(plr.Name, true) -- recursive
             if imgLabel and imgLabel:IsA("ImageLabel") then
@@ -212,7 +212,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 7️⃣ MainUI.Spectate -> Username
+        --  MainUI.Spectate -> Username
         local spectateUI = gui:FindFirstChild("MainUI") 
             and gui.MainUI:FindFirstChild("Spectate")
 
@@ -224,7 +224,7 @@ local function NameProtect(toggled)
             end
         end
 
-        -- 8️⃣ EndScreen -> ChosenValue.Title
+        --  EndScreen -> ChosenValue.Title
         local chosenTitle = gui:FindFirstChild("EndScreen")
             and gui.EndScreen:FindFirstChild("Main")
             and gui.EndScreen.Main:FindFirstChild("PlayerStats")
@@ -238,7 +238,7 @@ local function NameProtect(toggled)
             chosenTitle.Text = "Protected"
         end
 
-        -- 9️⃣ EndScreen.WinnerTitle.Usernames
+        --  EndScreen.WinnerTitle.Usernames
         local winnerUsernames = gui:FindFirstChild("EndScreen")
             and gui.EndScreen:FindFirstChild("WinnerTitle")
             and gui.EndScreen.WinnerTitle:FindFirstChild("Usernames")
@@ -1810,7 +1810,7 @@ end)
 
 Workspace.DescendantAdded:Connect(highlightToolIfNeeded)
 
--- Generator ESP loop (preserved)
+-- Generator ESP loop
 -- Find map once (with retries), then track generators, plus a 0.5s poll for *new* generators
 task.spawn(function()
     local mapContainer
@@ -1855,7 +1855,7 @@ function ESP:SetEnabled(state)
     end
 end
 
--- Stats tracker UI creation (unchanged)
+-- Stats tracker UI creation
 local function createStatsTracker()
     -- Remove existing GUI if any
     local existingGui = PlayerGui:FindFirstChild("TimePlayedGUI")
@@ -2001,12 +2001,10 @@ local toggles = {
     StatsTracker = false,
     ESP = false,
     infiniteStamina = false,
-    AutoRejoinOnKick = true -- default ON as requested
+    AutoRejoinOnKick = true
 }
 local activeConnections = {}
 local guiRefs = {}
-
--- Feature functions reused by GUI callbacks
 
 -- Anim Ids
 local GuestSettingsTriggerAnims = {
@@ -2238,7 +2236,7 @@ local function stopLayDown()
     end
 end
 
--- Frontflip implementation (preserved)
+-- Frontflip implementation
 local function createFrontflip()
     return function()
         local sausageHolder
@@ -2445,7 +2443,6 @@ statsGui.Enabled = false
 
 -- Hook up Fluent controls (or fallback behavior if Fluent didn't load)
 if FluentLoaded then
-    -- Player Tab (Fluent version)
     Tabs.Player:AddSlider("Walkspeed", {
         Title = "Walkspeed",
         Default = 1,
@@ -3088,7 +3085,7 @@ if FluentLoaded then
 
 	Tabs.GuestSettings:AddParagraph({
         Title = "Edge Killer",
-        Content = "How many seconds until it blocks (to counter smartass LocalPlayers) (resets when killer gets out of range)"
+        Content = "How many seconds until it blocks (to counter smartass players) (resets when killer gets out of range)"
     })
 
     --------------------------------------------------------------------------
@@ -3104,11 +3101,11 @@ if FluentLoaded then
                         return loadstring(game:HttpGet("https://pastebin.com/raw/ztnYv27k"))()
                     end)
                     if not success then
-                        warn("❌ Failed to load Fake Block GUI:", result)
+                        warn("Failed to load Fake Block GUI:", result)
                     end
                 else
                     fakeGui.Enabled = true
-                    print("✅ Fake Block GUI enabled")
+                    print("Fake Block GUI enabled")
                 end
             end)
         end
@@ -3333,7 +3330,7 @@ local function playCustomAnim(animId, isPunch)
     end)
 
     if success and track then
-        print("✅ Playing custom " .. (isPunch and "punch" or "block") .. " animation:", animId)
+        print("Playing custom " .. (isPunch and "punch" or "block") .. " animation:", animId)
         track:Play()
         if isPunch then
             lastPunchTime = now
@@ -3341,7 +3338,7 @@ local function playCustomAnim(animId, isPunch)
             lastBlockTime = now
         end
     else
-        warn("❌ Failed to load or play custom animation: " .. animId)
+        warn("Failed to load or play custom animation: " .. animId)
     end
 end
 
@@ -3739,7 +3736,7 @@ imageButton.BorderSizePixel = 0
 imageButton.Size = UDim2.new(0, 36, 0, 36)
 imageButton.AnchorPoint = Vector2.new(0.5, 0.5)
 imageButton.Position = UDim2.new(0.5, 0, 0.5, 0)
-imageButton.Image = "http://www.roblox.com/asset/?id=10385136549"  -- Your icon ID here
+imageButton.Image = "http://www.roblox.com/asset/?id=10385136549"
 imageButton.Parent = buttonFrame
 
 -- Function to toggle Goonsaken Hub GUI frame visibility
